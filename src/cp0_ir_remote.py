@@ -1272,10 +1272,14 @@ class App:
             d.line((cx, 165, cx, H - 1), fill=ACCENT)
 
     def _toast_active(self):
+        if not self.toast:          # None / False 都表示「没有提示」
+            return False
         text, until, _color = self.toast
         return bool(text) and time.time() <= until
 
     def _toast_bar(self, d):
+        if not self.toast:
+            return
         text, until, color = self.toast
         if not text or time.time() > until:
             return
@@ -1560,6 +1564,27 @@ def shot_mode(outdir):
         app.grid_sel = GRID_PER_PAGE
         app.draw()
         app.last_frame.save(os.path.join(outdir, "08-remote-page2.png"))
+
+    # 空调状态页：品牌/方案组都挑第一个（有缓存码表时基本就是小米），任何一步
+    # 失败就跳过，不让截图流程整体失败。
+    ac = next((x for x in app.devices if "空调" in x["name"]), None)
+    if ac:
+        app.toast = None          # 别把上一屏的「已发送…」带到空调页
+        app.open_brands(ac)
+        if not app.job.wait(45)[2]:
+            app.poll_job()
+            acb = next((x for x in app.brands if x["name"] == "小米"),
+                       app.brands[0] if app.brands else None)
+            if acb is not None:
+                app.open_groups(acb)
+                if not app.job.wait(60)[2]:
+                    app.poll_job()
+                    if app.groups:
+                        app.open_pair(app.groups[0], test=False)
+                        if not app.job.wait(60)[2]:
+                            app.poll_job()
+                            app.draw()
+                            app.last_frame.save(os.path.join(outdir, "09-ac.png"))
     print("remote: %d 键 %dHz %s 前12=%s" % (
         len(app.ir_keys), app.freq, app.model, app.ir_keys[:12]))
     print("saved:", outdir)
