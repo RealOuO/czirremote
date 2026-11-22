@@ -1,0 +1,10 @@
+# 构建产物
+build/
+*.deb
+
+# Python
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store

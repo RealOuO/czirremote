@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Universal IR
+Comment=Native IR remote using the Xiaomi Mi code database (offline cache)
+Exec=/usr/bin/cp0-ir-remote
+Icon=share/images/cp0-ir-remote.png
+Terminal=false
+Type=Application
+Categories=Utility;
+StartupNotify=false

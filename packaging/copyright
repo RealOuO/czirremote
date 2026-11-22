@@ -1,0 +1,21 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: cp0-ir-remote
+Source: locally built package for M5Stack CardputerZero
+Comment:
+ This package bundles four Python modules: cp0_ir_remote.py (framebuffer UI,
+ keyboard handling, state machine), miir.py (Xiaomi IR code database client),
+ kkac.py (stateful AC frame encoder for libkksdk-style code tables) and
+ cp0_pinyin.py (generated GB2312 pinyin initial table for brand search).
+ .
+ The IR code protocol implemented by miir.py (endpoint layout, request signing
+ and the AES/GZIP pattern container) was derived from the mi_remote_database
+ project by Ysard (AGPL-3.0), https://github.com/ysard/mi_remote_database .
+ No code from that project is copied here; only protocol knowledge was used.
+ .
+ The stateful AC rule layout in kkac.py (compact record fields 1001/1003/1004/
+ 1005/1011/1012/1013, bit rules 1017, Lua checksums 1518/1522) was reconstructed
+ from the code tables served by Xiaomi's own database and from the libkksdk
+ protocol; the tables themselves are not redistributed in this package.
+ .
+ The remote control code data itself is fetched at runtime from Xiaomi servers
+ and belongs to its respective owners. It is cached locally for personal use.

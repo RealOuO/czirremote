@@ -1,0 +1,17 @@
+Package: @PKG@
+Version: @VERSION@
+Section: utils
+Priority: optional
+Architecture: @ARCH@
+Maintainer: cp0-ir-remote maintainers <cp0-ir-remote@users.noreply.github.com>
+Installed-Size: @SIZE@
+Depends: python3 (>= 3.11), python3-pil, python3-numpy, fonts-noto-cjk, v4l-utils, openssl, luajit
+Description: Native IR universal remote for CardputerZero
+ A framebuffer-native infrared remote for the M5Stack CardputerZero.
+ It draws straight to /dev/fb0 and reads the on-board TCA8418 keyboard,
+ uses the Xiaomi Mi Home IR code database (AES encrypted patterns) and
+ emits raw waveforms through /dev/lirc0.
+ .
+ No browser, no web server: launched from APPLaunch like any other
+ native app. Codes are cached on disk so a working remote keeps
+ working offline.
