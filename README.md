@@ -1,5 +1,7 @@
 # Universal IR Remote for CardputerZero
 
+**English** | [简体中文](README.zh-CN.md)
+
 A framebuffer-native infrared universal remote for the **M5Stack CardputerZero**
 (Raspberry Pi CM0). No browser, no web server, no compositor: it draws straight
 into `/dev/fb0`, reads the on-board TCA8418 keyboard, pulls IR codes from the
@@ -17,6 +19,8 @@ device type  →  brand  →  code set (trial power key)  →  remote
 |---|---|---|
 | ![types](screenshots/01-types.png) | ![search](screenshots/15-brand-search.png) | ![remote](screenshots/08-ac-remote.png) |
 
+The UI itself is in Chinese — labels quoted below are what appears on screen.
+
 ## Features
 
 - **Native rendering** — 320×170 RGB565 written directly to the framebuffer,
@@ -24,7 +28,8 @@ device type  →  brand  →  code set (trial power key)  →  remote
 - **Real code database** — device types, brands, code sets and IR patterns come
   from Xiaomi's own database, including the AES-encrypted pattern container.
 - **Brand search** — type pinyin initials (`xm` → 小米, `md` → 美的) instead of
-  scrolling 1800+ brands; hot brands for the current device type are pinned on top.
+  scrolling through 1800+ brands; hot brands for the current device type are
+  pinned on top.
 - **Stateful AC control** — power / temperature / mode / fan speed are encoded
   into a *single* full state frame, the same way Mi Home does it. Supports the
   compact rule layout (`1001/1003/1004/1005`, `1011/1012/1013`), bit rules
@@ -94,7 +99,7 @@ python3 tests/selftest.py
 | `Esc` / `del` | back | back |
 
 In brand search, letters are *text*, not navigation — use the footer keys
-`4`…`7` to move, `8` to clear, `Tab` to exit.
+`4`…`7` to move, `8` to clear, and `Tab` to exit.
 
 ## How it works
 
@@ -134,30 +139,6 @@ power**, with power last because it overwrites whole bytes.
 - **Self-loop RX is useless for waveform checking.** The transmitter AGC
   saturates the receiver, so you only see one blob. Use `tools/rx_decode.py`
   with a real remote instead.
-
-## 中文说明
-
-给 M5Stack CardputerZero（树莓派 CM0 核心）写的**原生红外万能遥控器**。不跑浏览器、不跑
-Web 服务，直接往 `/dev/fb0` 画 320×170 的 RGB565，直接读板载 TCA8418 键盘，码库取自小米
-米家（含 AES 加密的波形容器），发射走 `/dev/lirc0`。
-
-- 配遥控的流程和米家一致：设备类型 → 品牌 → 方案组（试发电源键）→ 遥控器
-- 品牌支持**拼音首字母搜索**（`xm` → 小米、`md` → 美的），当前设备类型的热门品牌置顶
-- 空调是**状态型**码表：电源/温度/模式/风速合成一帧发出去，支持紧凑规则
-  （`1001/1003/1004/1005`、`1011/1012/1013`）、位规则 `1017` 和 Lua 校验钩子 `1518/1522`
-- 码表和遥控器状态都落盘缓存，断网也能用
-- 不需要 root：普通桌面用户就在 `video` / `input` 组里，`/dev/fb0`、键盘节点、
-  `/dev/lirc[01]` 都能直接读写
-
-```sh
-# 在设备上构建（需要 dpkg-deb）
-VERSION=1.1.2 bash packaging/build_deb.sh
-sudo dpkg -i build/cp0-ir-remote_1.1.2_arm64.deb
-export XDG_RUNTIME_DIR=/run/user/1000 && systemctl --user restart APPLaunch
-```
-
-启动器里的名字是 **Universal IR**——APPLaunch 的磁贴标签只加载 `Montserrat-Bold.ttf`，
-没有 CJK fallback，写中文会被渲染成**空白**（连方框都没有），所以只能用英文名。
 
 ## Credits and disclaimer
 
